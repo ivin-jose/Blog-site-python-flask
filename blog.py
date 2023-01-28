@@ -10,12 +10,10 @@ app = Flask(__name__)
 def index():
 	return render_template('index.html')
 
-@app.route('/user/<name>/<id>')
+@app.route('/user/<name>')
 
-def user(name, id):
-	num = 35
-	return "<h2>Hello {} your id is {}!</h2>".format(name, num)
-
+def user(name):
+	return render_template('user.html', name = name)
 
 #Custom error pages
 

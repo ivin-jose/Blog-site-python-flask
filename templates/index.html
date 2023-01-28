@@ -1,5 +1,8 @@
-<h1>Hello gooys</h1>
-{% for i in range(1, 10)%}
-<h5>{% print(i + 7) %}</h5>
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Your home page</h1>
 <p>{% print('this is my first webpage') %}</p>
+
+{% endblock %}

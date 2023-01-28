@@ -1,11 +1,15 @@
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="./css/style.css">
 
-<center>
-	<div>
+{% extends 'base.html' %}
+
+{% block content %}
+	<center>
 		<div>
-			<h1 id="errorname">500</h1>
-			<h3 id="error">ERROR</h3>
+			<div>
+				<h1 id="errorname">500</h1>
+				<h3 id="error">ERROR</h3>
+			</div>
 		</div>
-	</div>
-</center>
+	</center>
+{% endblock %}
