@@ -6,11 +6,14 @@
 	<h1>Hello </h1>
 {% else %}
     <h1>Hello What's your name..?</h1>
-    {{ form.hidden_tag() }}
-    {{ form.name.label(class="form-label") }}
-    {{ form.name(class="form-control") }}
-    <br>
-    {{ form.submit(class="btn btn-primary") }}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+        <br>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+    
 {% endif%}
 
 {% endblock %}
