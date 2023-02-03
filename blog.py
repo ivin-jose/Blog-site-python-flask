@@ -72,13 +72,10 @@ def page_not_found(e):
 
 @app.route('/name', methods = ['GET', 'POST'])
 def name():
-	name = None
-	form = NameForm()
-	if form.validate_on_submit():
-		name = form.name.data
-		form.name.data = ''
-		flash(" Succefully Added!")
-	return render_template('name.html', name = name, form = form)
+	cursor = mysql.connection.cursor()
+	cursor.execute("SELECT * FROM users")
+	users = cursor.fetchall()
+	return render_template('name.html', users = users)
 
 # Adding user 
 
