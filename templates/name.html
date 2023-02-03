@@ -12,13 +12,17 @@
 {% if name %}
 	<h1>Hello {{ name|capitalize }}</h1>
 {% else %}
-    <h1>Hello What's your name..?</h1>
+    <h1>Hello users</h1>
     <form method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.name.label(class="form-label") }}
-        {{ form.name(class="form-control") }}
-        <br>
-        {{ form.submit(class="btn btn-primary") }}
+        <div class="form_div">
+           <!--  {{ form.hidden_tag() }}
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", placeholder="Your Name") }}
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="Your E-mail") }}
+            <br>
+            {{ form.submit(class="btn btn-primary") }} -->
+        </div>
     </form>
     
 {% endif%}
