@@ -66,7 +66,7 @@ def page_not_found(e):
 @app.errorhandler(500)
 
 def page_not_found(e):
-	return render_template('500.html')
+	return render_template('errors/505.html')
 
 #Name page router 
 
@@ -99,5 +99,24 @@ def add_user():
 		flash('User added succefullyy')
 	return render_template('add_user.html', name=name, form=form, email=email)
 
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+
+def update_user(id):
+	update_name = None
+	update_email = None
+
+	cursor = mysql.connection.cursor()
+	update_db = ("SELECT * FROM users WHERE id=(%s)")
+	values = (str(id))
+	cursor.execute(update_db, values)
+	users = cursor.fetchall()
+
+	if request.method == 'POST':
+		update_name = request.form.get('updatename')
+		update_email = request.form.get('updateemail') 
+	else:
+		return render_template('update_user.html', users = users, id=str(id))
+
+	return render_template('update_user.html', users = users)	
 
 

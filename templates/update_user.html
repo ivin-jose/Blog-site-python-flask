@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+	<div class="alert alert-primary alert-dismissible fade show" role="alert">
+		<strong>{{ name|upper }}</strong>{{ message }}
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+{% endfor %}
+{{id}}
+{% if name %}
+	<h1>Hello {{ name|capitalize }}</h1>
+	<h6> {{ email }}</h6>
+{% else %}
+	<h1>Update user:{{ id }}</h1>
+	 {% for row in users %}
+	<form action="/update/{{ row[0] }}" method="POST">
+		<div class="form_div">
+			<input type="text" class="form-control" placeholder="Your Name" name="updatename" value="{{ row[1] }}"/><br>
+			<input type="email" class="form-control" placeholder="Your E-mail" name="updateemail"value="{{ row[2] }}"/><br>
+			<br>
+			<input type = "submit" value = "Submit" class="btn btn-primary"/>
+		</div>
+	</form>
+	{% endfor %}
+
+{% endif%}
+{% endblock %}
