@@ -8,12 +8,11 @@
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
 {% endfor %}
-{{id}}
 {% if name %}
 	<h1>Hello {{ name|capitalize }}</h1>
 	<h6> {{ email }}</h6>
 {% else %}
-	<h1>Update user:{{ id }}</h1>
+	<h1>Update user:</h1>
 	 {% for row in users %}
 	<form action="/update/{{ row[0] }}" method="POST">
 		<div class="form_div">

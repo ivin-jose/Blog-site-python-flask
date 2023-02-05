@@ -107,13 +107,22 @@ def update_user(id):
 
 	cursor = mysql.connection.cursor()
 	update_db = ("SELECT * FROM users WHERE id=(%s)")
-	values = (str(id))
+	values = ([str(id)])
 	cursor.execute(update_db, values)
 	users = cursor.fetchall()
+	cursor.close()
 
 	if request.method == 'POST':
 		update_name = request.form.get('updatename')
-		update_email = request.form.get('updateemail') 
+		update_email = request.form.get('updateemail')
+
+		cursor = mysql.connection.cursor()
+		add_db = ("UPDATE users SET name = %s, email = %s WHERE id = %s")
+		val = (update_name, update_email, str(id))
+		cursor.execute(add_db, val)
+		mysql.connection.commit()
+		cursor.close()
+		flash("User Updated..!!") 
 	else:
 		return render_template('update_user.html', users = users, id=str(id))
 
