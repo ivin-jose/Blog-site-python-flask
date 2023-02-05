@@ -122,7 +122,11 @@ def update_user(id):
 		cursor.execute(add_db, val)
 		mysql.connection.commit()
 		cursor.close()
-		flash("User Updated..!!") 
+		flash("User Updated..!!")
+		cursor = mysql.connection.cursor()
+		cursor.execute("SELECT * FROM users")
+		users = cursor.fetchall()
+		return render_template('name.html', users = users)
 	else:
 		return render_template('update_user.html', users = users, id=str(id))
 
