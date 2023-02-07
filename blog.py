@@ -130,6 +130,21 @@ def update_user(id):
 	else:
 		return render_template('update_user.html', users = users, id=str(id))
 
-	return render_template('update_user.html', users = users)	
+	return render_template('update_user.html', users = users)
 
+# Deleting User 
+
+@app.route('/delete/<int:id>', methods = ['POST', 'GET'])
+
+def delete_user(id):
+	delete = ("DELETE FROM users WHERE (id = %s)")
+	val = ([str(id)])
+	cursor = mysql.connection.cursor()
+	cursor.execute(delete, val)
+	mysql.connection.commit()
+	flash("User Deleted !!!")
+	cursor.execute("SELECT * FROM users")
+	users = cursor.fetchall()
+	cursor.close()
+	return render_template('name.html', users = users)	
 

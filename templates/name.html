@@ -19,6 +19,7 @@
       <th scope="col">Name</th>
       <th scope="col">Email</th>
       <th>More</th>
+      <th scope="col">Danger</th>
     </tr>
   </thead>
 
@@ -29,11 +30,9 @@
             <td>{{ row[1] }}</td>
             <td>{{ row[2] }}</td>
             <td><a href="{{url_for('update_user', id = row[0] )}}">View/Edit</a></td>
+            <td><a href="{{url_for('delete_user', id = row[0] )}}" class = "btn btn-success"> Delete </a></td>
         </tr>
     {% endfor %}
   </tbody>
 </table>
-
-
-
 {% endblock %}
