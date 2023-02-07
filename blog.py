@@ -4,6 +4,7 @@ from wtforms import StringField, SubmitField, EmailField
 from wtforms.validators import DataRequired
 from flask_mysqldb import MySQL
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # Flask Instance
@@ -84,20 +85,22 @@ def name():
 def add_user():
 	name = None
 	email = None
+	password = None
 	form = UserForm()
 	if request.method == 'POST':
 		name = request.form['name']
 		email = request.form['email']
+		password = request.form['password']
 
 		cursor = mysql.connection.cursor()
-		add_db = ("INSERT INTO users (name, email) VALUES(%s,%s)")
-		val = (name, email)
+		add_db = ("INSERT INTO users (name, email, password) VALUES(%s, %s, %s)")
+		val = (name, email, password)
 		cursor.execute(add_db, val)
 		mysql.connection.commit()
 		cursor.close() 
 
 		flash('User added succefullyy')
-	return render_template('add_user.html', name=name, form=form, email=email)
+	return render_template('add_user.html', name=name, form=form, email=email, password=password)
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 
@@ -115,10 +118,11 @@ def update_user(id):
 	if request.method == 'POST':
 		update_name = request.form.get('updatename')
 		update_email = request.form.get('updateemail')
+		update_password = request.form.get('updatepassword')
 
 		cursor = mysql.connection.cursor()
-		add_db = ("UPDATE users SET name = %s, email = %s WHERE id = %s")
-		val = (update_name, update_email, str(id))
+		add_db = ("UPDATE users SET name = %s, email = %s, password = %s WHERE id = %s")
+		val = (update_name, update_email, update_password, str(id))
 		cursor.execute(add_db, val)
 		mysql.connection.commit()
 		cursor.close()

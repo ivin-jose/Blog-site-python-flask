@@ -16,8 +16,9 @@
 	 {% for row in users %}
 	<form action="/update/{{ row[0] }}" method="POST">
 		<div class="form_div">
-			<input type="text" class="form-control" placeholder="Your Name" name="updatename" value="{{ row[1] }}"/><br>
-			<input type="email" class="form-control" placeholder="Your E-mail" name="updateemail"value="{{ row[2] }}"/><br>
+			<input type="text" class="form-control" placeholder="Your Name" name="updatename" value="{{ row[1] }}" required /><br>
+			<input type="email" class="form-control" placeholder="Your E-mail" name="updateemail"value="{{ row[2] }}" required /><br>
+			<input type="password" class="form-control" placeholder="Your Password" name="updatepassword"value="{{ row[4] }}" required /><br>
 			<br>
 			<input type = "submit" value = "Submit" class="btn btn-primary"/>
 		</div>
