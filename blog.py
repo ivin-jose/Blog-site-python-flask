@@ -24,16 +24,9 @@ mysql = MySQL(app)
 app.config['SECRET_KEY'] = "is my secret key"
 
 # class Usersmodel(mysql.Model):
-def hashing_password(password):
-	@property
-	def password(self):
-		raise AttributeError('password is not')
-	@password.setter
-	def password(self, password):
-		self.password_hash = generate_password_hash(password)
-
-	def verify_password(self, password):
-		return check_password_hash(self.password, password)		
+def hash_password(password):
+	hashpassword = bcrypt.generate_password_hash(password)
+	return hashpassword
 
 #ceate a Form Class
 
@@ -106,7 +99,7 @@ def add_user():
 		name = request.form['name']
 		email = request.form['email']
 		password = request.form['password']
-		hashpassword = bcrypt.generate_password_hash(password)
+		hashpassword = hash_password(password)
 
 		cursor = mysql.connection.cursor()
 		add_db = ("INSERT INTO users (name, email, password) VALUES(%s, %s, %s)")
