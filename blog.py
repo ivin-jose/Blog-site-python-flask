@@ -5,10 +5,12 @@ from wtforms.validators import DataRequired
 from flask_mysqldb import MySQL
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
 
 
 # Flask Instance
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 # Mysql DataBase 
 app.config['MYSQL_HOST'] = 'localhost'
@@ -20,6 +22,18 @@ mysql = MySQL(app)
 
 # The Secrete key
 app.config['SECRET_KEY'] = "is my secret key"
+
+# class Usersmodel(mysql.Model):
+def hashing_password(password):
+	@property
+	def password(self):
+		raise AttributeError('password is not')
+	@password.setter
+	def password(self, password):
+		self.password_hash = generate_password_hash(password)
+
+	def verify_password(self, password):
+		return check_password_hash(self.password, password)		
 
 #ceate a Form Class
 
@@ -86,21 +100,25 @@ def add_user():
 	name = None
 	email = None
 	password = None
+	hashpassword = None
 	form = UserForm()
 	if request.method == 'POST':
 		name = request.form['name']
 		email = request.form['email']
 		password = request.form['password']
+		hashpassword = bcrypt.generate_password_hash(password)
 
 		cursor = mysql.connection.cursor()
 		add_db = ("INSERT INTO users (name, email, password) VALUES(%s, %s, %s)")
-		val = (name, email, password)
+		val = (name, email, hashpassword)
 		cursor.execute(add_db, val)
 		mysql.connection.commit()
 		cursor.close() 
 
 		flash('User added succefullyy')
-	return render_template('add_user.html', name=name, form=form, email=email, password=password)
+	return render_template('add_user.html', name=name, form=form, email=email,
+	 						password=password,
+	 						hashedpass=hashpassword)
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 
