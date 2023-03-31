@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="login-page login-section">
+	<div class="form">
+		<form class="login-form" method="POST" id="login-form">
+			<label>USERNAME</label>
+			<input type="text"  name="username" placeholder="User name" id="username" />
+			<label>PASSWORD</label>
+			<input type="password" placeholder="Password" name="password" value = "" id="password" />
+			<button>Login</button><br><br>
+			<label style="color: red;" id="uslabel">{% print(login_error_msg) %}</label>
+		</form>
+	</div>
+</div>
+{% endblock %}

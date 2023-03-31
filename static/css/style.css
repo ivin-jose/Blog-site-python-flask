@@ -5,7 +5,308 @@ h1 {
 body {
 	background: #f4f4f4;
 }
+
+.logo {
+      font-size: 50px;
+    padding-left: 20px;
+}
+
+.btn {
+  color: white;
+  background: #087197;
+  border: 0px;
+}
+.btn:hover {
+  background: #0094ca;
+}
+.btn:focus {
+  border: 0px;
+} 
+
 .form_div{
 	background: white;
 	padding: 30px;
+}
+.blog-user {
+	margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.blog-content {
+	width: 90%;
+	text-align: justify;
+}
+
+.blog-content a {
+  font-size: 20px;
+  text-decoration: initial;
+}
+
+.blog-image img {
+	height: 50vh;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.blog-content .blog-writing p{
+	line-height: 30px;
+}
+.blog-footer-line{
+	height: 4px !important;
+	background: #0374ff;
+	margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 760px) {
+	.blog-content {
+		width: 100%;
+	}
+	.blog-image img {
+		width: 100%;
+		object-fit: fill;
+	}
+}
+
+/*login section*/
+
+.login-page {
+  width: 360px;
+  margin: auto;
+}
+
+.login-section .form {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.login-section .form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.login-section .form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4caf50;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.login-section .form button:hover,
+.login-section .form button:active,
+.login-section .form button:focus {
+  background: #43a047;
+}
+
+.login-section .form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+
+.login-section .form .message a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.form .register-form {
+  display: none;
+}
+
+.login-section .container {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+}
+
+.login-section .container:before,
+.login-section .container:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.login-section .container .info {
+  margin: 50px auto;
+  text-align: center;
+}
+
+.login-section .container .info h1 {
+  margin: 0 0 15px;
+  padding: 0;
+  font-size: 36px;
+  font-weight: 300;
+  color: #1a1a1a;
+}
+
+.login-section .container .info span {
+  color: #4d4d4d;
+  font-size: 12px;
+}
+
+.login-section .container .info span a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.login-section .container .info span .fa {
+  color: #ef3b3a;
+}
+
+/*blog posts*/
+
+.blog-card {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.card{
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.blog-card-btn {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 30px;
+}
+#img{
+  width: 200px;
+  height: 200px;
+  float: left;
+  padding: 20px;
+  border-radius: 35px;
+}
+#h3{
+  font-size: 30px;
+  font-family: cursive;
+  font-weight: bold;
+  color: gray;
+}
+#p{
+  text-align: justify;
+  margin: 20px;
+} 
+
+}
+
+
+/*full blog page - user_blog_full.html*/
+
+.parallax-container {
+  position:relative;
+  overflow:hidden;
+  height: 450px;
+}
+
+.parallax {
+  position:absolute;
+  top:20%;
+  height:120%;
+  width:100%;
+  
+  background-image:url('../images/automobiles.jpg');
+  background-size:cover;
+}
+
+.blog-parallax h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
+
+.blog-parallax .container { 
+  width:80%;
+  
+  position:relative;
+  top:-250px;
+  
+  background-color:#fff;
+  margin:0 auto;
+  
+  padding:50px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+.blog-parallax h1 { font-size:50px;margin-bottom:10px;}
+.blog-parallax h3 { font-size:18px;margin-bottom:20px;}
+.blog-parallax h2 { font-size:34px;margin-bottom:10px;}
+.blog-parallax p,blockquote { font-size:19px;}
+.blog-parallax li { font-size:19px;}
+
+.blog-parallax p,ul { margin-bottom:20px;}
+.blog-parallax blockquote { margin-left:35px;}
+
+.blog-parallax ul li ul { margin-bottom:0;margin-left:35px;}
+
+#edit-profile-form {
+  
+}
+
+.user-blog-options {
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* user_blog.html */
+
+.blog_error {
+  letter-spacing: 12px;
+  font-size: 30px;
+  margin-top: 30px;
+}
+
+.newblogbtn {
+  width: 25% !important;
+  background: white !important;
+  color: black !important;
+  border-color: black !important;
+}
+
+@media screen and (max-width: 600px) {
+  .newblogbtn {
+    width: 200px !important;
+    margin-bottom: 30px;
+  }
+}
+
+/*user profile profile.html*/
+
+.user-profile-image img{
+  border-radius: 100px;
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+}
+
+.user-profile-section {
+  border-right: 2px solid blue;
+  height: 100vh;
+}
+
+.user-profile-section h1{
+  letter-spacing: 5px;
+  margin-top: 30px;
+}
+
+.user-profile-details {
+  text-align: justify;
 }

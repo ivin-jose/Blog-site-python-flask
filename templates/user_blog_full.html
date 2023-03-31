@@ -1,0 +1,35 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="blog-parallax">
+<div class="parallax-container">
+  <div class="parallax" speed="1.5"></div>
+</div>
+
+{% for row in data %}
+<div class="container" style="margin-top: 45%;">
+  <div class="user-blog-options">
+    <div><h1>{{ row[3] }}</h1></div>
+    <div>
+    {% if session['username'] == row[2] %}
+    <a href="{{ url_for('delete_blog', blogid = row[0])}}" style="color: red;">Delete Blog</a>
+    <a href="{{ url_for('update_blog', blogid = row[0])}}">Edit Blog</a>
+    {% endif %}
+  </div>
+  </div>
+  <h3><i>{{ row[6] }}</i> by <a href="{{ url_for('user_profile', userid = row[1])}}">{{ row[2] }}</a></h3>
+  <h6>{{ row[5] }}</h6><br>
+  <p>{{ row[4] }}</p>
+  <div>
+    {% if session['username'] == row[2] %}
+    <a href="{{ url_for('user_profile', userid = row[0])}}" style="color: red;">Delete Blog</a>
+    <a href="{{ url_for('update_blog', blogid = row[0])}}">Edit Blog</a>
+    {% endif %}
+  </div>
+</div>
+</div>
+{% endfor %}
+
+{% endblock %}

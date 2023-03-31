@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="login-page login-section">
+	<div class="form">
+		<form class="login-form" method="POST" id="signup-form">
+			<input type="text" placeholder="Name" name="name" id="name" />
+			<label style="color: red;" id="uslabel"></label>
+			<input type="text"  name="username" placeholder="User name" id="username" />
+			<label style="color: red;"></label>
+			<input type="text" placeholder="E-mail" name="email" value = "" id="email" />
+			<label></label>
+			<input type="text" placeholder="About You" name="about" value = "" id="about" />
+			<input type="password" placeholder="Password" name="password" value = "" id="password" />
+			<button>Signup</button>
+
+		</form>
+	</div>
+</div>
+
+{% endblock %}

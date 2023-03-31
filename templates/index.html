@@ -2,7 +2,22 @@
 
 {% block content %}
 
-<h1>Your home page</h1>
-<p>{% print('this is my first webpage') %}</p>
+<center>
+	<h2>This is the website to show your potential</h2>
+	<h5>Find some great things here....</h5>
+	<p>Some works are</p>
+</center>
+<section class="home-blog">
+	{% for row in data %}
+	<div class="blog-content">
+		<div class="blog-user"><i>{{ row[2] }}</i></div>
+		<div class="blog-category"><i>{{ row[5] }} : {{ row[6] }}</i></div><br>
+		<div class="blog-header"><h2>{{ row[3] }}</h2></div>
+		<div class="blog-writing"><p>{{ row[4] }}</div>
+			<a href="{{ url_for('user_blog_full', blog_id = row[0])}}">Continue Reading...</a>
+			<div class="blog-footer"><hr class="blog-footer-line"></div>
+		</div>
+		{% endfor %}
+	</section>
 
 {% endblock %}

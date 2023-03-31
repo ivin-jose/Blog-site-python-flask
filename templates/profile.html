@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+	<div class="row user-profile">
+		<div class="col-md-6 col-sm-6 col-lg-6 user-profile-section">
+			<center>
+				{% for row in datas%}
+				<div class="user-profile-image">
+					<img src="../static/images/automobiles.jpg">
+				</div>
+					<h1>{{ row[2] }}</h1><br>
+				<div class="user-profile-details">	
+					<h5>Name : {{ row[1] }}</h5><br>
+					<b>Contact : </b> {{ row[3] }}<br><br>
+					<h5>About Me</h5>
+					<p>About me : {{ row[6] }}</p>
+					<p>Joined on : {{ row[5] }}</p>
+				</div>
+			    {% endfor %}	
+			</center>
+		</div>
+		<div class="col-md-6 col-sm-6 col-lg-6">
+			<center>
+				<h2 style="text-decoration: underline;">Main Works</h2>
+				<p class="blog_error"> {{ blog_notfound_error }} </p>
+				<div class="blog-content">
+					{% for row in blogs %}
+					<div class="blog-user"><i>{{ row[2] }}</i></div>
+					<div class="blog-category"><i>{{ row[5] }} : {{ row[6] }}</i></div><br>
+					<div class="blog-header"><h2>{{ row[3] }}</h2></div>
+						<a href="{{ url_for('user_blog_full', blog_id = row[0])}}">Continue Reading...</a>
+					<div class="blog-footer"><hr class="blog-footer-line"></div>
+					{% endfor %}
+				</div>
+			</center>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
