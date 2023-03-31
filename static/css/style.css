@@ -68,6 +68,10 @@ body {
 	}
 }
 
+.d-flex {
+  width: 50%;
+}
+
 /*login section*/
 
 .login-page {
@@ -299,7 +303,6 @@ body {
 
 .user-profile-section {
   border-right: 2px solid blue;
-  height: 100vh;
 }
 
 .user-profile-section h1{

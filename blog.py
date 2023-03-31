@@ -371,6 +371,31 @@ def user_profile(userid):
 	return render_template('profile.html', datas = rows, blogs = blogs,
 	 blog_notfound_error = blog_notfound_error)
 
+#search blog
+
+@app.route('/search_blog', methods = ['GET', 'POST'])
+def search_blog():
+	search_element = ''
+	blog_notfound_error = ''
+	blogs = ''
+	if request.method == 'POST':
+		search_element = request.form.get('search')
+		search = ('%' + search_element + '%');
+		cursor = mysql.connection.cursor()
+		check = ("SELECT * FROM blog_content WHERE maincontent LIKE 'search'")
+		# values = ([str(userid)])
+		cursor.execute(check)
+		blogs = cursor.fetchall()
+		if blogs:
+			blog_notfound_error = ""
+			for row in blogs:
+				uid = row[0]
+			else:
+				blog_notfound_error = "No Blog Found!"
+
+
+	return render_template('search_display.html', data = blogs, blog_notfound_error = blog_notfound_error)	
+
 
 # #Name page router 
 
