@@ -17,7 +17,15 @@
 					<p>About me : {{ row[6] }}</p>
 					<p>Joined on : {{ row[5] }}</p>
 				</div>
-			    {% endfor %}	
+
+			    {% if session['username'] == row[2] %}
+			    <div class="user-profile-things">
+			    	<a href="" class="btn newblogbtn user-delete-btn" style="color: red;" data-bs-toggle="modal" data-bs-target="#delete_account_Modal">Delete Account</a>
+			    	<a href="{{url_for('logout')}}" class="btn newblogbtn user-logout-btn" style="color: red;">Logout</a>
+			    	<a href="" class="btn newblogbtn user-edit-btn" style="color: green;">Edit Profile</a>
+			    </div>	
+			    {% endif %}
+			    {% endfor %}
 			</center>
 		</div>
 		<div class="col-md-6 col-sm-6 col-lg-6">
@@ -36,6 +44,29 @@
 			</center>
 		</div>
 	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete_account_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Your Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <b>Do You want Delete Your Account..??</b>
+
+        <p>Your account will permanently deleted. You can't be retake this </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <form action="delete_account" method="POST">
+        	<button type="submit" class="btn btn-primary">Yes</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

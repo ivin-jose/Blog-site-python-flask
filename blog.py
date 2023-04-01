@@ -371,6 +371,29 @@ def user_profile(userid):
 	return render_template('profile.html', datas = rows, blogs = blogs,
 	 blog_notfound_error = blog_notfound_error)
 
+# Delete Account
+
+@app.route('/delete_account', methods = ['GET', 'POST'])
+def delete_account():
+	userid = session['userid']
+	if request.method == 'POST':
+		cursor = mysql.connection.cursor()
+		check = ("DELETE FROM users WHERE userid = %s")
+		values = ([str(userid)])
+		cursor.execute(check, values)
+		mysql.connection.commit()
+
+		session["username"] = None
+		session["password"] = None
+		session["userid"] = None
+
+		cursor = mysql.connection.cursor()
+		check = ("SELECT * FROM blog_content")
+		cursor.execute(check)
+		rows = cursor.fetchall()
+
+	return render_template('index.html', data = row)	
+
 #search blog
 
 @app.route('/search_blog', methods = ['GET', 'POST'])
