@@ -189,7 +189,7 @@ def add_profile():
 		file.save(os.path.join(os.path.abspath(os.path.dirname(realpath(__file__))),app.config['UPLOAD_FOLDER'], file.filename))
 		return redirect('profile')
 
-	return render_template('profile_image_uploading.html')
+	return render_template('profile_image_uploading.html')	
 
 # Logout session
 
@@ -463,30 +463,6 @@ def search_blog():
 
 	return render_template('search_display.html', data = blogs, blog_notfound_error = blog_notfound_error)	
 
-
-#https://tutorial101.blogspot.com/2021/04/python-flask-upload-and-display-image.html
-
-app.config['UPLOAD_FOLDER'] = 'static/images/profilepics'
-
-
-@app.route('/upload_image', methods = ['POST', 'GET'])
-def upload_image():
-
-	if request.method == 'POST':
-		file = request.files['file']
-		path = '../static/images/profilepics/'
-		file_path = (path + file.filename)
-		data = 'file.read()'
-		cursor = mysql.connection.cursor()
-		add_db = ("INSERT INTO upload (filename, data) VALUES(%s, %s)")
-		val = (file_path, data)
-		cursor.execute(add_db, val)
-		mysql.connection.commit()
-
-		# To move image to folder
-		file.save(os.path.join(os.path.abspath(os.path.dirname(realpath(__file__))),app.config['UPLOAD_FOLDER'], file.filename))
-
-	return render_template('upload_image.html')
 
 
 

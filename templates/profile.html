@@ -7,7 +7,10 @@
 			<center>
 				{% for row in datas%}
 				<div class="user-profile-image">
-					<img src="{{ row[7] }}">
+					<img src="{{ row[7] }}"><br><br>
+					{% if session['username'] == row[2] %}
+					<a href="{{ url_for('add_profile') }}">Change Profile pic</a>
+					{% endif %}
 				</div>
 					<h1>{{ row[2] }}</h1><br>
 				<div class="user-profile-details">	
