@@ -8,16 +8,21 @@
 	<p>Some works are</p>
 </center>
 <section class="home-blog">
-	{% for row in data %}
+	
 	<div class="blog-content">
-		<div class="blog-user"><i><a href="{{ url_for('user_profile', userid = row[1]) }}">{{ row[2] }}</a></i></div>
+		{% for row in data %}
+		<div class="blog-user">
+			<img src="{{ row[7] }}">
+			<i><a href="{{ url_for('user_profile', userid = row[1]) }}">{{ row[2] }}</a></i>
+		</div>
 		<div class="blog-category"><i>{{ row[5] }} : {{ row[6] }}</i></div><br>
 		<div class="blog-header"><h2>{{ row[3] }}</h2></div>
 		<div class="blog-writing"><p>{{ row[4] }}</div>
-			<a href="{{ url_for('user_blog_full', blog_id = row[0])}}">Continue Reading...</a>
-			<div class="blog-footer"><hr class="blog-footer-line"></div>
-		</div>
+		<a href="{{ url_for('user_blog_full', blog_id = row[0])}}" class="a">Continue Reading...</a>
+		<div class="blog-footer"><hr class="blog-footer-line"></div>
 		{% endfor %}
+	</div>
+		
 	</section>
 
 {% endblock %}

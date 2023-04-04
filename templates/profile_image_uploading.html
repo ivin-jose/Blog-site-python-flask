@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<center>
+	<h3>UPLOAD PROFILE YOUR PICTURE</h3><br><br>
+	 <form method="POST" enctype="multipart/form-data">
+        <dl>
+            <p>
+                <input type="file" name="file" class="" autocomplete="off" required>
+            </p>
+        </dl>
+        <p>
+            <input type="submit" value="Submit" class="btn btn-info">
+        </p>
+    </form>
+</center>
+
+{% endblock %}

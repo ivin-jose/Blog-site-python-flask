@@ -32,14 +32,29 @@ body {
   font-size: 20px;
 }
 
+.blog-user img {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  object-fit: cover;
+}
+
+.blog-user a {
+  text-decoration: none;
+}
+
 .blog-content {
 	width: 90%;
 	text-align: justify;
 }
 
 .blog-content a {
-  font-size: 20px;
+  font-size: 20px !important;
   text-decoration: initial;
+}
+
+.a {
+  text-decoration: none !important;
 }
 
 .blog-image img {
@@ -229,9 +244,13 @@ body {
   top:20%;
   height:120%;
   width:100%;
-  
-  background-image:url('../images/automobiles.jpg');
-  background-size:cover;
+}
+
+.parallax img {
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
+}
 }
 
 .blog-parallax h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
@@ -295,7 +314,7 @@ body {
 /*user profile profile.html*/
 
 .user-profile-image img{
-  border-radius: 100px;
+  border-radius: 130px;
   width: 220px;
   height: 220px;
   object-fit: cover;

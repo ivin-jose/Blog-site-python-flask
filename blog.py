@@ -70,11 +70,21 @@ class UserForm(FlaskForm):
 @app.route('/')
 
 def index():
+	profilepic = None
 	cursor = mysql.connection.cursor()
-	check = ("SELECT * FROM blog_content")
+	check = ("SELECT blog_content.blog_id, blog_content.userid, blog_content.username, blog_content.heading, blog_content.maincontent, blog_content.date, blog_content.category, users.profilepic  FROM blog_content INNER JOIN users ON blog_content.userid = users.userid LIMIT 12")
 	cursor.execute(check)
 	rows = cursor.fetchall()
-	return render_template('index.html', data = rows)
+
+	userid = session['userid']
+	check1 = ("SELECT profilepic FROM users WHERE userid = %s")
+	value = [str(userid)]
+	cursor.execute(check1, value)
+	pic = cursor.fetchall()
+	for row in pic:
+		profilepic = row[0]
+
+	return render_template('index.html', data = rows, profilepic = profilepic)
 
 #Custom error pages
 
@@ -148,13 +158,38 @@ def signup():
 						session["userid"] = uid
 							
 						cursor.close()
-						return redirect("/")
+						return redirect("add_profile")
 							
 
 	return render_template('signup.html',
 	    password = password, 
 		username_message = username_message, 
 		email_message = email_message)
+
+# Add profile
+
+app.config['UPLOAD_FOLDER'] = 'static/images/profilepics'
+
+@app.route('/add_profile', methods = ['GET', 'POST'])
+def add_profile():
+
+	if request.method == 'POST':
+		userid = session['userid']
+		file = request.files['file']
+		path = '../static/images/profilepics/'
+		file_path = (path + file.filename)
+		data = 'file.read()'
+		cursor = mysql.connection.cursor()
+		add_db = ("UPDATE users SET profilepic = %s, data = %s WHERE userid = %s")
+		val = (file_path, data, str(userid))
+		cursor.execute(add_db, val)
+		mysql.connection.commit()
+
+		# To move image to folder
+		file.save(os.path.join(os.path.abspath(os.path.dirname(realpath(__file__))),app.config['UPLOAD_FOLDER'], file.filename))
+		return redirect('profile')
+
+	return render_template('profile_image_uploading.html')
 
 # Logout session
 
@@ -236,9 +271,10 @@ def user_blog_full(blog_id):
 	userid = session['userid']
 	username = session['username']
 	blog_notfound_error = ''
+	profilepic = ''
 
 	cursor = mysql.connection.cursor()
-	check = ("SELECT * FROM blog_content WHERE blog_id = %s")
+	check = ("SELECT blog_content.blog_id, blog_content.userid, blog_content.username, blog_content.heading, blog_content.maincontent, blog_content.date, blog_content.category, users.profilepic  FROM blog_content INNER JOIN users ON blog_content.userid = users.userid WHERE blog_id = %s")
 	values = ([str(blog_id)])
 	cursor.execute(check, values)
 	rows = cursor.fetchall()
@@ -248,7 +284,14 @@ def user_blog_full(blog_id):
 	else:
 		blog_notfound_error = "No Blog Found!"
 
-	return render_template('user_blog_full.html', data = rows, username = username)
+	check1 = ("SELECT profilepic FROM users WHERE userid = %s")
+	value = [str(userid)]
+	cursor.execute(check1, value)
+	pic = cursor.fetchall()
+	for row in pic:
+		profilepic = row[0]	
+
+	return render_template('user_blog_full.html', data = rows, username = username, profilepic = profilepic)
 
 # blog update
 
@@ -393,7 +436,7 @@ def delete_account():
 		cursor.execute(check)
 		rows = cursor.fetchall()
 
-	return render_template('index.html', data = row)	
+	return render_template('index.html', data = rows)	
 
 #search blog
 
@@ -406,16 +449,16 @@ def search_blog():
 		search_element = request.form.get('search')
 		search = ('%' + search_element + '%');
 		cursor = mysql.connection.cursor()
-		check = ("SELECT * FROM blog_content WHERE maincontent LIKE 'search'")
-		# values = ([str(userid)])
-		cursor.execute(check)
+		check = ("SELECT blog_content.blog_id, blog_content.userid, blog_content.username, blog_content.heading, blog_content.maincontent, blog_content.date, blog_content.category, users.profilepic FROM blog_content INNER JOIN users ON (blog_content.userid = users.userid) WHERE maincontent LIKE %s OR category LIKE %s OR blog_content.username LIKE %s")
+		values = ([str(search)], [str(search)], [str(search)])
+		cursor.execute(check, values)
 		blogs = cursor.fetchall()
 		if blogs:
 			blog_notfound_error = ""
 			for row in blogs:
 				uid = row[0]
-			else:
-				blog_notfound_error = "No Blog Found!"
+		else:
+			blog_notfound_error = "No Blog Found!"
 
 
 	return render_template('search_display.html', data = blogs, blog_notfound_error = blog_notfound_error)	

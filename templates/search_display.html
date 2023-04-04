@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<center>
+	<h2 class="blog_error">{{ blog_notfound_error }}</h2>
+</center>
 {% for row in data %}
 <div class="blog-content">
-	<div class="blog-user"><i>{{ row[2] }}</i></div>
+	<div class="blog-user">
+		<img src="{{ row[7] }}">
+		<i><a href="{{ url_for('user_profile', userid = row[1]) }}">{{ row[2] }}</a></i>
+	</div>
 	<div class="blog-category"><i>{{ row[5] }} : {{ row[6] }}</i></div><br>
 	<div class="blog-header"><h2>{{ row[3] }}</h2></div>
 	<div class="blog-writing"><p>{{ row[4] }}</div>
-	<a href="{{ url_for('user_blog_full', blog_id = row[0])}}">Continue Reading...</a>
+	<a href="{{ url_for('user_blog_full', blog_id = row[0])}}" class="a">Continue Reading...</a>
 	<div class="blog-footer"><hr class="blog-footer-line"></div>
 </div>
 {% endfor %}
