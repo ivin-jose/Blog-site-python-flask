@@ -449,8 +449,8 @@ def search_blog():
 		search_element = request.form.get('search')
 		search = ('%' + search_element + '%');
 		cursor = mysql.connection.cursor()
-		check = ("SELECT blog_content.blog_id, blog_content.userid, blog_content.username, blog_content.heading, blog_content.maincontent, blog_content.date, blog_content.category, users.profilepic FROM blog_content INNER JOIN users ON (blog_content.userid = users.userid) WHERE maincontent LIKE %s OR category LIKE %s OR blog_content.username LIKE %s")
-		values = ([str(search)], [str(search)], [str(search)])
+		check = ("SELECT blog_content.blog_id, blog_content.userid, blog_content.username, blog_content.heading, blog_content.maincontent, blog_content.date, blog_content.category, users.profilepic FROM blog_content INNER JOIN users ON (blog_content.userid = users.userid) WHERE maincontent LIKE %s OR heading LIKE %s OR category LIKE %s OR blog_content.username LIKE %s")
+		values = ([str(search)], [str(search)], [str(search)], [str(search)])
 		cursor.execute(check, values)
 		blogs = cursor.fetchall()
 		if blogs:

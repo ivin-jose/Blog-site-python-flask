@@ -9,7 +9,7 @@
 				<div class="user-profile-image">
 					<img src="{{ row[7] }}"><br><br>
 					{% if session['username'] == row[2] %}
-					<a href="{{ url_for('add_profile') }}">Change Profile pic</a>
+					<a href="{{ url_for('add_profile') }}" class="btn newblogbtn">Change Profile</a>
 					{% endif %}
 				</div>
 					<h1>{{ row[2] }}</h1><br>
