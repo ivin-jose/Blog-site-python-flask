@@ -230,7 +230,6 @@ body {
 
 }
 
-
 /*full blog page - user_blog_full.html*/
 
 .parallax-container {
@@ -250,7 +249,6 @@ body {
   width: 100%;
   height: 70vh;
   object-fit: cover;
-}
 }
 
 .blog-parallax h1,h3,p,h2,blockquote,li { font-family:'Merriweather', sans-serif;font-weight:300;}
@@ -289,6 +287,25 @@ body {
     justify-content: space-between;
 }
 
+/*asking questins div*/
+
+.questions h2 {
+  margin-top: -100px;
+}
+
+.questions input {
+  border: 0px;
+  border-bottom: 2px solid red;
+  width: 50%;
+  height: 40px;
+  margin-bottom: 30px;
+}
+.questions input:active {
+  border: 0px;
+  border-bottom: 2px solid red;
+  width: 50%;
+  height: 40px;
+}
 /* user_blog.html */
 
 .blog_error {
@@ -359,5 +376,4 @@ body {
     flex-direction: column;
     align-items: center;
   }
-
 }

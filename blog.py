@@ -475,3 +475,10 @@ def search_blog():
 
 
 	return render_template('search_display.html', data = blogs, blog_notfound_error = blog_notfound_error)	
+
+# Ask questions 
+
+@app.route('/ask_questions', methods = ['GET', 'POST'])
+def ask_questions():
+
+	return render_template('index.html')
