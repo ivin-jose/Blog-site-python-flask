@@ -341,7 +341,7 @@ def delete_blog(blogid):
 	cursor.close()
 	return redirect('/')	
 
-# user profile
+#  current user profile
 
 @app.route('/profile', methods = ['GET', 'POST'])
 
@@ -368,25 +368,7 @@ def profile():
 
 	return render_template('profile.html', datas = rows, blogs = blogs, blog_notfound_error = blog_notfound_error)
 
-@app.route('/edit_profile', methods = ['GET', 'POST'])
-
-#edit user profile
-
-def edit_profile():
-	userid = session['userid']
-
-	if request.method == 'POST':
-		uname = request.form.get('name')
-		username = request.form.get('username')
-		email = request.form.get('email')
-		cursor = mysql.connection.cursor()
-		add_db = ("UPDATE users SET name = %s, username = %s, email = %s WHERE userid = %s")
-		val = (uname, username, email, str(userid))
-		cursor.execute(add_db, val)
-		mysql.connection.commit()
-		cursor.close()
-		session["username"] = username
-	return redirect('/profile')	
+# @app.route('/edit_profile', methods = ['GET', 'POST'])
 
 # Displaying author page when blog link clicked
 
@@ -414,6 +396,37 @@ def user_profile(userid):
 
 	return render_template('profile.html', datas = rows, blogs = blogs,
 	 blog_notfound_error = blog_notfound_error)
+
+# edit profile
+
+@app.route('/edit_profile/<int:userid>', methods = ['GET', 'POST'])
+
+def edit_profile(userid):
+	blog_notfound_error = None
+	cursor = mysql.connection.cursor()
+	check = ("SELECT * FROM users WHERE userid = %s")
+	values = ([str(userid)])
+	cursor.execute(check, values)
+	rows = cursor.fetchall()
+
+	if request.method == 'POST':
+		name = request.form.get('name')
+		username = request.form.get('username')
+		email = request.form.get('email')
+		about = request.form.get('about')
+
+		cursor = mysql.connection.cursor()
+		add_db = ("UPDATE users SET name = %s, username = %s, email = %s, about = %s WHERE userid = %s")
+		val = (name, username, email, about, str(userid))
+		cursor.execute(add_db, val)
+		mysql.connection.commit()
+		cursor.close()
+
+		session["username"] = username
+
+		return redirect('/')
+
+	return render_template('edit_profile.html', datas = rows)
 
 # Delete Account
 
@@ -462,142 +475,3 @@ def search_blog():
 
 
 	return render_template('search_display.html', data = blogs, blog_notfound_error = blog_notfound_error)	
-
-
-
-
-
-
-
-
-
-
-
-
-
-# #Name page router 
-
-# @app.route('/name', methods = ['GET', 'POST'])
-# def name():
-# 	cursor = mysql.connection.cursor()
-# 	cursor.execute("SELECT * FROM users")
-# 	users = cursor.fetchall()
-# 	return render_template('name.html', users = users)
-
-# # Adding user 
-
-# @app.route('/user/add', methods = ['GET', 'POST'])
-
-# def add_user():
-# 	name = None
-# 	email = None
-# 	password = None
-# 	hashpassword = None
-# 	form = UserForm()
-# 	if request.method == 'POST':
-# 		name = request.form['name']
-# 		email = request.form['email']
-# 		password = request.form['password']
-# 		hashpassword = hash_password(password)
-# 		today_date = date.today()
-
-# 		cursor = mysql.connection.cursor()
-# 		add_db = ("INSERT INTO users (name, email, date, password) VALUES(%s, %s, %s, %s)")
-# 		val = (name, email, today_date, hashpassword)
-# 		cursor.execute(add_db, val)
-# 		mysql.connection.commit()
-# 		cursor.close() 
-
-# 		flash('User added succefullyy')
-# 	return render_template('add_user.html', name=name, form=form, email=email,
-# 	 						password=password,
-# 	 						hashedpass=hashpassword)
-
-# @app.route('/update/<int:id>', methods=['GET', 'POST'])
-
-# def update_user(id):
-# 	update_name = None
-# 	update_email = None
-
-# 	cursor = mysql.connection.cursor()
-# 	update_db = ("SELECT * FROM users WHERE id=(%s)")
-# 	values = ([str(id)])
-# 	cursor.execute(update_db, values)
-# 	users = cursor.fetchall()
-# 	cursor.close()
-
-# 	if request.method == 'POST':
-# 		update_name = request.form.get('updatename')
-# 		update_email = request.form.get('updateemail')
-# 		update_password = request.form.get('updatepassword')
-# 		today_date = date.today()
-
-# 		cursor = mysql.connection.cursor()
-# 		add_db = ("UPDATE users SET name = %s, email = %s, date = %s, password = %s WHERE id = %s")
-# 		val = (update_name, update_email, today_date, update_password, str(id))
-# 		cursor.execute(add_db, val)
-# 		mysql.connection.commit()
-# 		cursor.close()
-# 		flash("User Updated..!!")
-# 		cursor = mysql.connection.cursor()
-# 		cursor.execute("SELECT * FROM users")
-# 		users = cursor.fetchall()
-# 		return render_template('name.html', users = users)
-# 	else:
-# 		return render_template('update_user.html', users = users, id=str(id))
-
-# 	return render_template('update_user.html', users = users)
-
-# # Deleting User 
-
-# @app.route('/delete/<int:id>', methods = ['POST', 'GET'])
-
-# def delete_user(id):
-# 	delete = ("DELETE FROM users WHERE (id = %s)")
-# 	val = ([str(id)])
-# 	cursor = mysql.connection.cursor()
-# 	cursor.execute(delete, val)
-# 	mysql.connection.commit()
-# 	flash("User Deleted !!!")
-# 	cursor.execute("SELECT * FROM users")
-# 	users = cursor.fetchall()
-# 	cursor.close()
-# 	return render_template('name.html', users = users)
-
-# # checking email and passwords
-
-# @app.route('/user', methods = ['POST', 'GET'])
-
-# def user():
-# 	name = None
-# 	email = None
-# 	password = None
-# 	hashpassword = None
-# 	users = None
-# 	val = False
-# 	form = PasswordForm()
-# 	if form.validate_on_submit():
-# 		email = form.email.data
-# 		password = form.password.data
-
-# 		cursor = mysql.connection.cursor()
-# 		user_info = ("SELECT * FROM users WHERE email=(%s)")
-# 		values = ([email])
-# 		cursor.execute(user_info, values)
-# 		users = cursor.fetchall()
-# 		for user in users:
-# 			if check_hash_password(user[4], password) == True:
-# 				val = True
-# 				name = user[1]
-# 			else:
-# 				val = False	
-# 		cursor.close() 
-
-# 		form.email.data = ''
-# 		form.password.data = ''
-
-# 	return render_template('user.html', name = name, email = email,
-# 			password = password, user = users, val = val,
-# 			form = form)
-
-

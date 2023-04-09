@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="login-page login-section">
+	<div class="form">
+		<form class="login-form" method="POST" id="signup-form">
+			{% for row in datas %}
+			<input type="text" placeholder="Name" name="name" id="name" value="{{ row[1] }}" />
+			<label style="color: red;" id="uslabel"></label>
+			<input type="text"  name="username" placeholder="User name" id="username"  value="{{ row[2] }}" />
+			<label style="color: red;"></label>
+			<input type="text" placeholder="E-mail" name="email" id="email"  value="{{ row[3] }}" />
+			<label></label>
+			<input type="text" placeholder="About You" name="about" id="about"  value="{{ row[6] }}" />
+			<button>Signup</button>
+			{% endfor %}
+		</form>
+	</div>
+</div>
+
+{% endblock %}
