@@ -507,10 +507,11 @@ def ask_question_form(category, subcategory):
 		userid = session['userid']
 		question = request.form.get('question')
 		answer = 'No Answers Yet'
+		answereduserid = 'none'
 
 		cursor = mysql.connection.cursor()
-		add_db = ("INSERT INTO questions (userid, question, answer) VALUES (%s, %s, %s)")
-		val = (userid, question, answer)
+		add_db = ("INSERT INTO questions (userid, question, answer, answereduserid, category, subcategory) VALUES (%s, %s, %s, %s, %s, %s)")
+		val = (userid, question, answer, answereduserid, category, subcategory)
 		cursor.execute(add_db, val)
 		mysql.connection.commit()
 		flag = False
