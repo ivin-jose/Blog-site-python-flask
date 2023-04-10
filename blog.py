@@ -516,4 +516,43 @@ def ask_question_form(category, subcategory):
 		mysql.connection.commit()
 		flag = False
 
-	return render_template('ask_question_form.html', subcategory = subcategory, flag = flag)		
+	return render_template('ask_question_form.html', subcategory = subcategory, flag = flag)
+
+# Answer questions category
+
+@app.route('/answer_questions_category', methods = ['GET', 'POST'])
+def answer_questions_category():
+	cursor = mysql.connection.cursor()
+	check = ("SELECT * FROM questioncategoris")
+	cursor.execute(check)
+	rows = cursor.fetchall()
+	return render_template('answer_question_category.html', qcategory = rows)
+
+# Ask questions subcategory
+
+@app.route('/answer_questions_subcategory/<category>', methods = ['GET', 'POST'])
+def answer_questions_subcategory(category):
+	cursor = mysql.connection.cursor()
+	check = ("SELECT subcategory, category FROM subcategories WHERE category = %s")
+	values = ([str(category)])
+	cursor.execute(check, values)
+	rows = cursor.fetchall()
+
+	return render_template('answer_questions_subcategory.html', qsubcategory = rows)
+
+# displaying questions
+
+@app.route('/answerquestions/<category>/<subcategory>', methods = ['GET', 'POST'])
+def answerquestions(category, subcategory):
+	answer = 'No Answers Yet'
+	cursor = mysql.connection.cursor()
+	check = ("SELECT question FROM questions WHERE category = %s AND subcategory = %s AND answer = %s")
+	values = ([str(category)], [str(subcategory)], answer)
+	cursor.execute(check, values)
+	rows = cursor.fetchall()
+	if rows:
+		qnotfound = ""
+	else:
+	 	qnotfound = "Not Found any questions.!"	
+
+	return render_template('answer_the_questions.html', datas = rows, qnotfound = qnotfound)	

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h5>{{qnotfound}}</h5>
+
+{% for row in datas %}
+
+<div>
+	<h4 style="text-transform: capitalize;">{{ row[0] }} ?</h4>
+</div>
+
+{% endfor %}
+
+{% endblock %}
