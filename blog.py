@@ -478,7 +478,23 @@ def search_blog():
 
 # Ask questions 
 
-@app.route('/ask_questions', methods = ['GET', 'POST'])
-def ask_questions():
+@app.route('/ask_questions_category', methods = ['GET', 'POST'])
+def ask_questions_category():
+	qcategory = ['PHYSICS', 'CHEMISTRY', 'AUTOMOBILES', 'PROGARMMING']
+	cursor = mysql.connection.cursor()
+	check = ("SELECT * FROM questioncategoris")
+	cursor.execute(check)
+	rows = cursor.fetchall()
+	return render_template('ask_question_category.html', qcategory = rows)
 
-	return render_template('index.html')
+# Ask questions 
+
+@app.route('/ask_questions_subcategory/<subcategory>', methods = ['GET', 'POST'])
+def ask_questions_subcategory(subcategory):
+	cursor = mysql.connection.cursor()
+	check = ("SELECT subcategory FROM subcategories WHERE category = %s")
+	values = ([str(subcategory)])
+	cursor.execute(check, values)
+	rows = cursor.fetchall()
+
+	return render_template('ask_questions_subcategory.html', qsubcategory = rows)	

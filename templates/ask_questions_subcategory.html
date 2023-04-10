@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container">
+	<h3>Please select category to ask</h3>
+
+	<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">sub Categorys</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+
+  	{% for row in qsubcategory %}
+    <tr>
+      <th scope="row"></th>
+      <td><a href="{{ url_for('ask_questions_subcategory', subcategory = row)}}" style="text-decoration: none;"> {{ row[0] }} </a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+{% endblock %}
