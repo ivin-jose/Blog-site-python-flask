@@ -476,25 +476,43 @@ def search_blog():
 
 	return render_template('search_display.html', data = blogs, blog_notfound_error = blog_notfound_error)	
 
-# Ask questions 
+# Ask questions category
 
 @app.route('/ask_questions_category', methods = ['GET', 'POST'])
 def ask_questions_category():
-	qcategory = ['PHYSICS', 'CHEMISTRY', 'AUTOMOBILES', 'PROGARMMING']
 	cursor = mysql.connection.cursor()
 	check = ("SELECT * FROM questioncategoris")
 	cursor.execute(check)
 	rows = cursor.fetchall()
 	return render_template('ask_question_category.html', qcategory = rows)
 
-# Ask questions 
+# Ask questions subcategory
 
-@app.route('/ask_questions_subcategory/<subcategory>', methods = ['GET', 'POST'])
-def ask_questions_subcategory(subcategory):
+@app.route('/ask_questions_subcategory/<category>', methods = ['GET', 'POST'])
+def ask_questions_subcategory(category):
 	cursor = mysql.connection.cursor()
-	check = ("SELECT subcategory FROM subcategories WHERE category = %s")
-	values = ([str(subcategory)])
+	check = ("SELECT subcategory, category FROM subcategories WHERE category = %s")
+	values = ([str(category)])
 	cursor.execute(check, values)
 	rows = cursor.fetchall()
 
 	return render_template('ask_questions_subcategory.html', qsubcategory = rows)	
+
+# Ask questions form
+
+@app.route('/ask_question_form/<category>/<subcategory>', methods = ['GET', 'POST'])
+def ask_question_form(category, subcategory):
+	flag = True
+	if request.method == 'POST':
+		userid = session['userid']
+		question = request.form.get('question')
+		answer = 'No Answers Yet'
+
+		cursor = mysql.connection.cursor()
+		add_db = ("INSERT INTO questions (userid, question, answer) VALUES (%s, %s, %s)")
+		val = (userid, question, answer)
+		cursor.execute(add_db, val)
+		mysql.connection.commit()
+		flag = False
+
+	return render_template('ask_question_form.html', subcategory = subcategory, flag = flag)		

@@ -20,9 +20,13 @@
   	{% for row in qcategory %}
     <tr>
       <th scope="row"></th>
-      <td><a href="{{ url_for('ask_questions_subcategory', subcategory = row[1])}}" style="text-decoration: none; text-transform: uppercase;"> {{ row[1] }} </a></td>
+      <td><a href="{{ url_for('ask_questions_subcategory', category = row[1])}}" style="text-decoration: none; text-transform: uppercase;"> {{ row[1] }} </a></td>
     </tr>
     {% endfor %}
+    <tr>
+    	<th></th>
+    	<td><a href="{{ url_for('ask_questions_subcategory', category = 'OTHER')}}" style="text-decoration: none; text-transform: uppercase;"> OTHER</a></td>
+    </tr>
   </tbody>
 </table>
 

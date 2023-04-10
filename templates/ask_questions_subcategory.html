@@ -20,7 +20,7 @@
   	{% for row in qsubcategory %}
     <tr>
       <th scope="row"></th>
-      <td><a href="{{ url_for('ask_questions_subcategory', subcategory = row)}}" style="text-decoration: none;"> {{ row[0] }} </a></td>
+      <td><a href="{{ url_for('ask_question_form', subcategory = row[0], category = row[1])}}" style="text-decoration: none;"> {{ row[0] }} </a></td>
     </tr>
     {% endfor %}
   </tbody>

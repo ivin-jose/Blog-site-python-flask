@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h4>What do you want to know About <span style="color: green">{{ subcategory }}</span></h4><br>
+<p>Ask anything here any of our user know abuot it they will answer to you and help to grow you.</p>
+
+{% if flag %}
+<form method="POST">
+	<input type="text" name="question" placeholder="Ask About {{ subcategory }} " class="form-control" required />
+	<input type="hidden" name=""><br><br>
+	<button class="btn" style="width: 100px">Ask</button>
+</form>
+{% else %}
+
+<h4>You get best answers by our expert users</h4>
+
+{% endif %}
+{% endblock %}
