@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<center>
+	<h2>ANSWER THE QUESTION</h2><br>
+</center>
+
+{% for row in data %}
+<h2 style="color: green; font-family: inherit; font-size: 25px;"> {{ row[1] }}? </h2><br>
+<p>This is the question by <a href="{{ url_for('user_profile', userid = row[0] )}}">{{ row[2] }}</a> </p>
+
+<form method="POST">
+	<textarea class="form-control" placeholder="{{ row[1] }}?" style="height: 120px;"></textarea><br>
+	<button class="btn">Submit</button>
+</form>
+
+{% endfor %}
+
+{% endblock %}

@@ -7,7 +7,7 @@
 {% for row in datas %}
 
 <div>
-	<h4 style="text-transform: capitalize;">{{ row[0] }} ?</h4>
+	<h4 style="text-transform: capitalize;">{{ row[1] }} ? <span style="font-size: 13px;"><a href="{{ url_for('answering', qid = row[0]) }}">Answer to this</a></span></h4>
 </div>
 
 {% endfor %}

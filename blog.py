@@ -103,7 +103,6 @@ def page_not_found(e):
 	return render_template('errors/505.html')
 
 # login
-
 @app.route('/signup', methods = ['GET', 'POST'])
 
 def signup():
@@ -546,7 +545,7 @@ def answer_questions_subcategory(category):
 def answerquestions(category, subcategory):
 	answer = 'No Answers Yet'
 	cursor = mysql.connection.cursor()
-	check = ("SELECT question FROM questions WHERE category = %s AND subcategory = %s AND answer = %s")
+	check = ("SELECT questionid, question FROM questions WHERE category = %s AND subcategory = %s AND answer = %s")
 	values = ([str(category)], [str(subcategory)], answer)
 	cursor.execute(check, values)
 	rows = cursor.fetchall()
@@ -556,3 +555,14 @@ def answerquestions(category, subcategory):
 	 	qnotfound = "Not Found any questions.!"	
 
 	return render_template('answer_the_questions.html', datas = rows, qnotfound = qnotfound)	
+
+# Answering section of single questions
+
+@app.route('/answering/<int:qid>', methods = ['GET', 'POST'])
+def answering(qid):
+	cursor = mysql.connection.cursor()
+	check = ("SELECT questions.userid, questions.question, users.username FROM users INNER JOIN questions ON users.userid = questions.userid WHERE questions.questionid = %s")
+	values = ([str(qid)])
+	cursor.execute(check, values)
+	rows = cursor.fetchall()
+	return render_template('answering.html', data = rows)	
