@@ -561,8 +561,43 @@ def answerquestions(category, subcategory):
 @app.route('/answering/<int:qid>', methods = ['GET', 'POST'])
 def answering(qid):
 	cursor = mysql.connection.cursor()
-	check = ("SELECT questions.userid, questions.question, users.username FROM users INNER JOIN questions ON users.userid = questions.userid WHERE questions.questionid = %s")
+	check = ("SELECT questions.questionid, questions.userid, questions.question, users.username FROM users INNER JOIN questions ON users.userid = questions.userid WHERE questions.questionid = %s")
 	values = ([str(qid)])
 	cursor.execute(check, values)
 	rows = cursor.fetchall()
-	return render_template('answering.html', data = rows)	
+
+	check1 = ("SELECT answers.answerid, answers.userid, answers.answer, users.username FROM users INNER JOIN answers ON users.userid = answers.userid WHERE answers.questionid = %s")
+	value1 = ([str(qid)])
+	cursor.execute(check1, value1)
+	answers = cursor.fetchall()
+
+	if request.method == 'POST':
+		userid = session['userid']
+		answer = request.form.get('answer')
+		questionid = request.form.get('questionid')
+
+		cursor = mysql.connection.cursor()
+		add_db = ("INSERT INTO answers (userid, answer, questionid) VALUES (%s, %s, %s)")
+		val = (userid, answer, questionid)
+		cursor.execute(add_db, val)
+		mysql.connection.commit()
+
+	return render_template('answering.html', data = rows, answers = answers)	
+
+
+@app.route('/uploadanswer/', methods = ['GET', 'POST'])
+def uploadanswer():
+
+	message = "Answer submitted succefuly"
+	if request.method == 'POST':
+		userid = session['userid']
+		answer = request.form.get('answer')
+		questionid = request.form.get('questionid')
+
+		cursor = mysql.connection.cursor()
+		add_db = ("INSERT INTO answers (userid, answer, questionid) VALUES (%s, %s, %s)")
+		val = (userid, answer, questionid)
+		cursor.execute(add_db, val)
+		mysql.connection.commit()
+
+	return redirect('/')

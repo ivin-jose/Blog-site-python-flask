@@ -7,14 +7,28 @@
 </center>
 
 {% for row in data %}
-<h2 style="color: green; font-family: inherit; font-size: 25px;"> {{ row[1] }}? </h2><br>
-<p>This is the question by <a href="{{ url_for('user_profile', userid = row[0] )}}">{{ row[2] }}</a> </p>
+<h2 style="color: green; font-family: inherit; font-size: 25px;"> {{ row[2] }}? </h2><br>
+<p>This is the question by <a href="{{ url_for('user_profile', userid = row[0] )}}">{{ row[3] }}</a> </p>
 
-<form method="POST">
-	<textarea class="form-control" placeholder="{{ row[1] }}?" style="height: 120px;"></textarea><br>
+<form method="POST" action="{{url_for('uploadanswer')}}">
+	<textarea class="form-control" placeholder="{{ row[2] }}?" style="height: 120px;" name="answer"></textarea><br>
+	<input type="hidden" name="questionid" value="{{ row[0] }}">
 	<button class="btn">Submit</button>
 </form>
-
+<br><br>
 {% endfor %}
+
+<h3>Available answers</h3>
+
+{% for row in answers%}
+<div class="answer-div">
+	
+
+<p>Answered by  <a href="#">{{ row[3] }}</a> </p>
+{{ row [2] }}
+</div><br>
+{% endfor %}
+
+
 
 {% endblock %}
