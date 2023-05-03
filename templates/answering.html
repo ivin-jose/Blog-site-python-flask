@@ -8,7 +8,7 @@
 
 {% for row in data %}
 <h2 style="color: green; font-family: inherit; font-size: 25px;"> {{ row[2] }}? </h2><br>
-<p>This is the question by <a href="{{ url_for('user_profile', userid = row[0] )}}">{{ row[3] }}</a> </p>
+<p>This is the question by <a href="{{ url_for('user_profile', userid = row[1] )}}">{{ row[3] }}</a> </p>
 
 <form method="POST" action="{{url_for('uploadanswer')}}">
 	<textarea class="form-control" placeholder="{{ row[2] }}?" style="height: 120px;" name="answer"></textarea><br>
@@ -24,7 +24,7 @@
 <div class="answer-div">
 	
 
-<p>Answered by  <a href="#">{{ row[3] }}</a> </p>
+<p>Answered by  <a href="{{ url_for('user_profile', userid = row[1] )}}">{{ row[3] }}</a> </p>
 {{ row [2] }}
 </div><br>
 {% endfor %}
