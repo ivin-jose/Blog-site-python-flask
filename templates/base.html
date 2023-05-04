@@ -51,11 +51,11 @@
             {% if session['username'] != None %}
             <a class="dropdown-item" href="{{url_for('ask_questions_category')}}">Ask Questions</a>
             <a class="dropdown-item" href="{{url_for('answer_questions_category')}}">Answer Questions</a>
-            <a class="dropdown-item" href="{{url_for('ask_questions_category')}}"><span style='color: #087197;'>SEARCH</span></a>
+            <a class="dropdown-item" href="{{url_for('search_question')}}"><span style='color: #087197;'>Search Questions</span></a>
             {% else %}
             <a class="dropdown-item disabled" href="#">Ask Questions</a>
             <a class="dropdown-item disabled" href="#">Answer Questions</a>
-            <a class="dropdown-item" href="{{url_for('ask_questions_category')}}"><span style='color: #087197;'>SEARCH</span></a>
+            <a class="dropdown-item" href="{{url_for('search_question')}}"><span style='color: #087197;'>Search Questions</span></a>
             {% endif %}
           </div>
         </li>

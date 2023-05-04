@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+	<form method="POST">
+		<center>
+			<input type="search" name="qsearch" placeholder="Search any question" class="form-control">
+			<br>
+		<input type="submit" value="SEARCH" class="btn btn-info form-control" style="width: 50%;">
+		</center>
+	</form>
+</div><br>
+{% for row in data%}
+
+
+
+<div class="answer-div">
+	
+<a href="#">{{ row[2] }}</a>
+<p>{{ row[5] }}</p>
+<p>category : {{ row[7] }}</p>
+</div>
+
+<!-- {{row[0]}}qid<br>
+{{row[1]}}quserid<br>
+{{row[2]}}<br>question<br>
+{{row[3]}}<br>auserid<br>
+{{row[4]}}<br>answerid<br>
+{{row[5]}}<br>answer<br>
+{{row[6]}}<br>qid -->
+{%endfor%}
+{% endblock %}

@@ -585,9 +585,9 @@ def answering(qid):
 	return render_template('answering.html', data = rows, answers = answers)	
 
 
-@app.route('/uploadanswer/', methods = ['GET', 'POST'])
+@app.route('/uploadanswer', methods = ['GET', 'POST'])
 def uploadanswer():
-
+	answer = 'Y'
 	message = "Answer submitted succefuly"
 	if request.method == 'POST':
 		userid = session['userid']
@@ -600,4 +600,34 @@ def uploadanswer():
 		cursor.execute(add_db, val)
 		mysql.connection.commit()
 
+		cursor1 = mysql.connection.cursor()
+		update = ("UPDATE questions SET answer = %s WHERE questionid = %s")
+		vale = (answer, [str(questionid)])
+		cursor1.execute(update, vale)
+		mysql.connection.commit()
+		cursor.close()
+
 	return redirect('/')
+
+# search questions
+
+@app.route('/search_question', methods = ['GET', 'POST'])
+def search_question():
+	blogs = ''
+	blog_notfound_error =''
+	if request.method == 'POST':
+		search_element = request.form.get('qsearch')
+		search = ('%' + search_element + '%');
+		cursor = mysql.connection.cursor()
+		check = ("SELECT questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, answers.answer, answers.questionid, questions.subcategory FROM answers INNER JOIN questions ON (answers.questionid = questions.questionid) WHERE subcategory LIKE %s OR category LIKE %s OR questions.question LIKE %s OR answers.answer LIKE %s")
+		values = ([str(search)], [str(search)], [str(search)], [str(search)])
+		cursor.execute(check, values)
+		blogs = cursor.fetchall()
+		if blogs:
+			blog_notfound_error = ""
+			for row in blogs:
+				uid = row[0]
+		else:
+			blog_notfound_error = "No Blog Found!"
+
+	return render_template('search_question.html',  data = blogs, blog_notfound_error = blog_notfound_error)

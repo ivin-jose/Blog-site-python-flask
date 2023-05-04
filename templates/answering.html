@@ -10,7 +10,7 @@
 <h2 style="color: green; font-family: inherit; font-size: 25px;"> {{ row[2] }}? </h2><br>
 <p>This is the question by <a href="{{ url_for('user_profile', userid = row[1] )}}">{{ row[3] }}</a> </p>
 
-<form method="POST" action="{{url_for('uploadanswer')}}">
+<form method="POST" action="{{ url_for('uploadanswer')}}">
 	<textarea class="form-control" placeholder="{{ row[2] }}?" style="height: 120px;" name="answer"></textarea><br>
 	<input type="hidden" name="questionid" value="{{ row[0] }}">
 	<button class="btn">Submit</button>
