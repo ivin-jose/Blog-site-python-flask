@@ -28,10 +28,12 @@ mysql = MySQL(app)
 app.config['SECRET_KEY'] = "is my secret key"
 
 # sessiom variables
-
+# session['userid'] = 123;
 # session["username"] = None
 # session["password"] = None
 # session["userid"] = None
+
+
 
 # class Usersmodel(mysql.Model):
 def hash_password(password):
@@ -65,26 +67,52 @@ class UserForm(FlaskForm):
 		return '<name % r>' % self.name
 
 
+if __name__ == '__main__':
+	app.run()
+
+
 # Router decorator
 
 @app.route('/')
-
 def index():
-	profilepic = None
-	cursor = mysql.connection.cursor()
-	check = ("SELECT blog_content.blog_id, blog_content.userid, blog_content.username, blog_content.heading, blog_content.maincontent, blog_content.date, blog_content.category, users.profilepic  FROM blog_content INNER JOIN users ON blog_content.userid = users.userid LIMIT 12")
-	cursor.execute(check)
-	rows = cursor.fetchall()
+    profilepic = None
+    rows = []
+    userid = session['userid'];
+    cursor = mysql.connection.cursor()
+    check1 = ("SELECT profilepic FROM users WHERE userid = %s")
+    value = [str(userid)]
+    cursor.execute(check1, value)
+    pic = cursor.fetchall()
+        
+    for row in pic:
+        profilepic = row[0]
 
-	userid = session['userid']
-	check1 = ("SELECT profilepic FROM users WHERE userid = %s")
-	value = [str(userid)]
-	cursor.execute(check1, value)
-	pic = cursor.fetchall()
-	for row in pic:
-		profilepic = row[0]
+    check = ("SELECT blog_content.blog_id, blog_content.userid, blog_content.username, blog_content.heading, blog_content.maincontent, blog_content.date, blog_content.category, users.profilepic  FROM blog_content INNER JOIN users ON blog_content.userid = users.userid LIMIT 12")
+    cursor.execute(check)
+    rows = cursor.fetchall()
+    cursor.close()
 
-	return render_template('index.html', data = rows, profilepic = profilepic)
+    return render_template('index.html', data=rows, profilepic=profilepic)
+
+# @app.route('/')
+
+# def index():
+# 	session['userid'] = 123
+# 	profilepic = None
+# 	cursor = mysql.connection.cursor()
+# 	check = ("SELECT blog_content.blog_id, blog_content.userid, blog_content.username, blog_content.heading, blog_content.maincontent, blog_content.date, blog_content.category, users.profilepic  FROM blog_content INNER JOIN users ON blog_content.userid = users.userid LIMIT 12")
+# 	cursor.execute(check)
+# 	rows = cursor.fetchall()
+
+# 	userid = session['userid'];
+# 	check1 = ("SELECT profilepic FROM users WHERE userid = %s")
+# 	value = [str(userid)]
+# 	cursor.execute(check1, value)
+# 	pic = cursor.fetchall()
+# 	for row in pic:
+# 		profilepic = row[0]
+
+# 	return render_template('index.html', data = rows, profilepic = profilepic)
 
 #Custom error pages
 
@@ -614,20 +642,66 @@ def uploadanswer():
 @app.route('/search_question', methods = ['GET', 'POST'])
 def search_question():
 	blogs = ''
-	blog_notfound_error =''
+	qnot_found =''
 	if request.method == 'POST':
 		search_element = request.form.get('qsearch')
 		search = ('%' + search_element + '%');
 		cursor = mysql.connection.cursor()
-		check = ("SELECT questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, answers.answer, answers.questionid, questions.subcategory FROM answers INNER JOIN questions ON (answers.questionid = questions.questionid) WHERE subcategory LIKE %s OR category LIKE %s OR questions.question LIKE %s OR answers.answer LIKE %s")
+		check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, answers.answer, answers.questionid, questions.subcategory FROM answers INNER JOIN questions ON (answers.questionid = questions.questionid) INNER JOIN users ON (users.userid = questions.userid) WHERE subcategory LIKE %s OR category LIKE %s OR questions.question LIKE %s OR answers.answer LIKE %s")
 		values = ([str(search)], [str(search)], [str(search)], [str(search)])
 		cursor.execute(check, values)
 		blogs = cursor.fetchall()
 		if blogs:
-			blog_notfound_error = ""
+			qnot_found = ""
 			for row in blogs:
 				uid = row[0]
 		else:
-			blog_notfound_error = "No Blog Found!"
+			qnot_found = "No Blog Found!"
 
-	return render_template('search_question.html',  data = blogs, blog_notfound_error = blog_notfound_error)
+	return render_template('search_question.html',  data = blogs, qnot_found = qnot_found)
+
+# view user answer
+
+@app.route('/view_user_answer', methods = ['GET', 'POST'])
+def view_user_answer():
+	blogs = ''
+	qnot_found ='Answered by : You'
+	userid = session['userid']
+
+	cursor = mysql.connection.cursor()
+	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, answers.answer, answers.questionid, questions.subcategory FROM questions INNER JOIN answers ON (questions.questionid = answers.questionid) INNER JOIN users ON (users.userid = questions.userid) WHERE answers.userid = %s")
+	values = ([str(userid)])
+	cursor.execute(check, values)
+	blogs = cursor.fetchall()
+
+	if blogs:
+		qnot_found = "Answered by : You"
+		for row in blogs:
+			uid = row[0]
+	else:
+		qnot_found = ""
+
+	return render_template('search_question.html',  data = blogs, qnot_found = qnot_found)
+
+# view user questions
+
+@app.route('/view_user_question', methods = ['GET', 'POST'])
+def view_user_question():
+	blogs = ''
+	qnot_found ='Questioned by : You'
+	userid = session['userid']
+
+	cursor = mysql.connection.cursor()
+	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, questions.answer, answers.questionid, questions.subcategory, answers.questionuserid FROM questions INNER JOIN answers ON (questions.userid = answers.questionuserid) INNER JOIN users ON (users.userid = questions.userid) WHERE questions.userid = %s")
+	values = ([str(userid)])
+	cursor.execute(check, values)
+	blogs = cursor.fetchall()
+
+	if blogs:
+		qnot_found = "Questioned by : You"
+		for row in blogs:
+			uid = row[0]
+	else:
+		qnot_found = ""
+
+	return render_template('search_question.html',  data = blogs, qnot_found = qnot_found)
