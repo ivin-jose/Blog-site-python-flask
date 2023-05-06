@@ -20,7 +20,7 @@
 	{% if row[6] == 'No Answers Yet' %}
 		<p style="color: red">No one get this answer</p>
 	{% else %}
-	By :<a href="{{ url_for('user_profile', userid = row[4])}}">{{ row[0] }}</a></h3><br><br>
+	By :<a href="{{ url_for('user_profile', userid = row[2])}}">{{ row[0] }}</a></h3><br><br>
 	{% endif %}
 	<p>{{ qnot_found  }}</p>
 </div>

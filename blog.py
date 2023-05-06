@@ -603,10 +603,11 @@ def answering(qid):
 		userid = session['userid']
 		answer = request.form.get('answer')
 		questionid = request.form.get('questionid')
+		questionuserid = request.form.get('questionuserid')
 
 		cursor = mysql.connection.cursor()
-		add_db = ("INSERT INTO answers (userid, answer, questionid) VALUES (%s, %s, %s)")
-		val = (userid, answer, questionid)
+		add_db = ("INSERT INTO answers (userid, answer, questionid, questionuserid) VALUES (%s, %s, %s, %s)")
+		val = (userid, answer, questionid, questionuserid)
 		cursor.execute(add_db, val)
 		mysql.connection.commit()
 
@@ -621,17 +622,18 @@ def uploadanswer():
 		userid = session['userid']
 		answer = request.form.get('answer')
 		questionid = request.form.get('questionid')
+		questionuserid = request.form.get('questionuserid')
 
 		cursor = mysql.connection.cursor()
-		add_db = ("INSERT INTO answers (userid, answer, questionid) VALUES (%s, %s, %s)")
-		val = (userid, answer, questionid)
+		add_db = ("INSERT INTO answers (userid, answer, questionid, questionuserid) VALUES (%s, %s, %s, %s)")
+		val = (userid, answer, questionid, questionuserid)
 		cursor.execute(add_db, val)
 		mysql.connection.commit()
 
-		cursor1 = mysql.connection.cursor()
-		update = ("UPDATE questions SET answer = %s WHERE questionid = %s")
-		vale = (answer, [str(questionid)])
-		cursor1.execute(update, vale)
+		cursor = mysql.connection.cursor()
+		update = ("UPDATE questions SET answer = %s, answereduserid = %s WHERE questionid = %s")
+		vale = (answer, [str(userid)], [str(questionid)])
+		cursor.execute(update, vale)
 		mysql.connection.commit()
 		cursor.close()
 
@@ -692,7 +694,7 @@ def view_user_question():
 	userid = session['userid']
 
 	cursor = mysql.connection.cursor()
-	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, questions.answer, answers.questionid, questions.subcategory, answers.questionuserid FROM questions INNER JOIN answers ON (questions.userid = answers.questionuserid) INNER JOIN users ON (users.userid = questions.userid) WHERE questions.userid = %s")
+	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, questions.subcategory, questions.question FROM questions INNER JOIN users ON (users.userid = questions.answereduserid) WHERE questions.userid = %s")
 	values = ([str(userid)])
 	cursor.execute(check, values)
 	blogs = cursor.fetchall()
@@ -704,4 +706,4 @@ def view_user_question():
 	else:
 		qnot_found = ""
 
-	return render_template('search_question.html',  data = blogs, qnot_found = qnot_found)
+	return render_template('view_questions.html',  data = blogs, qnot_found = qnot_found)

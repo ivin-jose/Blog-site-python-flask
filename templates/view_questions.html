@@ -2,17 +2,29 @@
 
 {% block content %}
 
-{% for row in datas %}
-{{ row[0] }}
-{{ row[1] }}
+<div>
+	<form method="POST">
+		<center>
+			<input type="search" name="qsearch" placeholder="Search any question" class="form-control">
+			<br>
+		<input type="submit" value="SEARCH" class="btn btn-info form-control" style="width: 50%;">
+		</center>
+	</form>
+</div><br>
+{% for row in data %}
 
-{{ row[2] }}
+<div class="answer-div">
+	<p style="text-transform: capitalize;">{{ row[3] }} ?</p>
+	<p style="color: green;">Answer : {{ row[5] }}</p>
+	<p>category : {{ row[4] }}</p>
+	{% if row[6] == 'No Answers Yet' %}
+		<p style="color: red">No one get this answer</p>
+	{% else %}
+	By :<a href="{{ url_for('user_profile', userid = row[2])}}">{{ row[0] }}</a></h3><br><br>
+	{% endif %}
+	<p>{{ qnot_found  }}</p>
+</div>
 
-{{ row[3] }}
 
-{{ row[4] }}
-{{ row[5] }}
-
-{% endfor %}
-
+{%endfor%}
 {% endblock %}

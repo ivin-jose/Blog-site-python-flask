@@ -13,6 +13,7 @@
 <form method="POST" action="{{ url_for('uploadanswer')}}">
 	<textarea class="form-control" placeholder="{{ row[2] }}?" style="height: 120px;" name="answer"></textarea><br>
 	<input type="hidden" name="questionid" value="{{ row[0] }}">
+	<input type="hidden" name="questionuserid" value="{{ row[1] }}">
 	<button class="btn">Submit</button>
 </form>
 <br><br>
