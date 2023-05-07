@@ -62,8 +62,8 @@
 
         <li class="nav-item dropdown">
           {% if session['username'] != None %}
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            profile
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: green;">
+            {{ session['username']}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="{{url_for('profile')}}"><span style='color: green;'>{{ session['username']}}</span></a></li>

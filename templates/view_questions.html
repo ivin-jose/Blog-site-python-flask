@@ -14,15 +14,16 @@
 {% for row in data %}
 
 <div class="answer-div">
-	<p style="text-transform: capitalize;">{{ row[3] }} ?</p>
-	<p style="color: green;">Answer : {{ row[5] }}</p>
-	<p>category : {{ row[4] }}</p>
-	{% if row[6] == 'No Answers Yet' %}
+	<h5 style="text-transform: capitalize;">{{ row[2] }} ?</h5>
+	<p style="color: green;">Answer : {{ row[4] }}</p>
+	<p>category : {{ row[3] }}</p>
+	{% if row[4] == 'No Answers Yet' %}
 		<p style="color: red">No one get this answer</p>
 	{% else %}
-	By :<a href="{{ url_for('user_profile', userid = row[2])}}">{{ row[0] }}</a></h3><br><br>
+	By :<a href="{{ url_for('user_profile', userid = row[1])}}">{{ row[5] }}</a></h3><br><br>
 	{% endif %}
 	<p>{{ qnot_found  }}</p>
+	<a href="{{ url_for('delete_user_q', id =  row[0] )}}" class="b1111">Remove your Question</a>
 </div>
 
 

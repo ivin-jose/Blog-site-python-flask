@@ -23,6 +23,16 @@
 	By :<a href="{{ url_for('user_profile', userid = row[2])}}">{{ row[0] }}</a></h3><br><br>
 	{% endif %}
 	<p>{{ qnot_found  }}</p>
+	{% if flag == True%}
+	<div class="" style="display: flex;">
+		<div>
+			<a href="{{ url_for('delete_user_a', id =  row[1] )}}" class="b1111">Remove your Answer</a>
+		</div>
+		<div>
+			<a href="" class="b1111" style="margin-left: 20px; color: green">Edit your Answer</a>
+		</div>
+	</div>
+	{% endif %}
 </div>
 
 

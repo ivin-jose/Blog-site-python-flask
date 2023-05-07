@@ -669,6 +669,7 @@ def view_user_answer():
 	blogs = ''
 	qnot_found ='Answered by : You'
 	userid = session['userid']
+	flag = True
 
 	cursor = mysql.connection.cursor()
 	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, answers.answer, answers.questionid, questions.subcategory FROM questions INNER JOIN answers ON (questions.questionid = answers.questionid) INNER JOIN users ON (users.userid = questions.userid) WHERE answers.userid = %s")
@@ -683,7 +684,7 @@ def view_user_answer():
 	else:
 		qnot_found = ""
 
-	return render_template('search_question.html',  data = blogs, qnot_found = qnot_found)
+	return render_template('search_question.html',  data = blogs, qnot_found = qnot_found, flag = flag)
 
 # view user questions
 
@@ -694,7 +695,7 @@ def view_user_question():
 	userid = session['userid']
 
 	cursor = mysql.connection.cursor()
-	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, questions.subcategory, questions.question FROM questions INNER JOIN users ON (users.userid = questions.answereduserid) WHERE questions.userid = %s")
+	check = ("SELECT questions.questionid, questions.userid, questions.question, questions.subcategory, questions.answer, users.username FROM questions LEFT JOIN users ON(users.userid = questions.answereduserid) WHERE questions.userid = %s")
 	values = ([str(userid)])
 	cursor.execute(check, values)
 	blogs = cursor.fetchall()
@@ -707,3 +708,50 @@ def view_user_question():
 		qnot_found = ""
 
 	return render_template('view_questions.html',  data = blogs, qnot_found = qnot_found)
+
+# deleting question
+
+@app.route('/delete_user_q/<int:id>', methods = ['GET', 'POST'])
+def delete_user_q(id):
+	blogs = ''
+	qnot_found ='Questioned by : You'
+	userid = session['userid']
+
+	cursor = mysql.connection.cursor()
+	check = ("DELETE FROM questions WHERE questionid = %s")
+	values = ([str(id)])
+	cursor.execute(check, values)
+	mysql.connection.commit()
+
+	cursor = mysql.connection.cursor()
+	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, questions.subcategory, questions.question FROM questions INNER JOIN users ON (users.userid = questions.answereduserid) WHERE questions.userid = %s")
+	values = ([str(userid)])
+	cursor.execute(check, values)
+	blogs = cursor.fetchall()
+	return render_template('view_questions.html',  data = blogs, qnot_found = qnot_found)
+
+# deleting question
+
+@app.route('/delete_user_a/<int:id>', methods = ['GET', 'POST'])
+def delete_user_a(id):
+	blogs = ''
+	qnot_found ='Questioned by : You'
+	userid = session['userid']
+	flag = True
+
+# need to delete a column from questions and answers 
+	cursor = mysql.connection.cursor()
+	check = ("DELETE FROM answers WHERE answerid = %s")
+	values = ([str(id)])
+	cursor.execute(check, values)
+	mysql.connection.commit()
+
+	cursor = mysql.connection.cursor()
+	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, answers.answer, answers.questionid, questions.subcategory FROM questions INNER JOIN answers ON (questions.questionid = answers.questionid) INNER JOIN users ON (users.userid = questions.userid) WHERE answers.userid = %s")
+	values = ([str(userid)])
+	cursor.execute(check, values)
+	blogs = cursor.fetchall()
+
+	return render_template('search_question.html',  data = blogs, qnot_found = qnot_found, flag = flag)
+
+	
