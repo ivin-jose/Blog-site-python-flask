@@ -730,7 +730,7 @@ def delete_user_q(id):
 	blogs = cursor.fetchall()
 	return render_template('view_questions.html',  data = blogs, qnot_found = qnot_found)
 
-# deleting question
+# deleting answer
 
 @app.route('/delete_user_a/<int:aid>/<int:qid>', methods = ['GET', 'POST'])
 def delete_user_a(aid, qid):
@@ -741,7 +741,7 @@ def delete_user_a(aid, qid):
 	answer = 'No Answers Yet'
 	answereduserid = 'none'
 
-# need to delete a column from questions and answers 
+	# need to delete a column from questions and answers 
 	cursor = mysql.connection.cursor()
 	check = ("DELETE FROM answers WHERE answerid = %s")
 	values = ([str(aid)])
@@ -763,4 +763,49 @@ def delete_user_a(aid, qid):
 
 	return render_template('search_question.html',  data = blogs, qnot_found = qnot_found, flag = flag)
 
-	
+# deleting answer
+
+@app.route('/edit_answer/<int:aid>/<int:qid>', methods = ['GET', 'POST'])
+def edit_answer(aid, qid):
+
+	cursor = mysql.connection.cursor()
+	check = ("SELECT answer, question FROM questions WHERE questionid = %s")
+	values = ([str(qid)])
+	cursor.execute(check, values)
+	ans = cursor.fetchall()
+
+	return render_template('update_answer.html', answer = ans, qid = qid, aid = aid)
+
+@app.route('/update_ans', methods = ['GET', 'POST'])
+def update_ans():
+	flag = True
+	userid = session['userid']
+	answer = 'Y'
+	message = "Answer submitted succefuly"
+	if request.method == 'POST':
+		answer = request.form.get('answer')
+		answerid = request.form.get('answerid')
+		questionid = request.form.get('questionid')
+
+		cursor1 = mysql.connection.cursor()
+		update1 = ("UPDATE questions SET answer = %s WHERE questionid = %s")
+		vale1 = (answer, [str(questionid)])
+		cursor1.execute(update1, vale1)
+		mysql.connection.commit()
+		cursor1.close()
+
+		cursor2 = mysql.connection.cursor()
+		update2 = ("UPDATE answers SET answer = %s WHERE answerid = %s")
+		vale2 = (answer, [str(answerid)])
+		cursor2.execute(update2, vale2)
+		mysql.connection.commit()
+		cursor2.close()
+
+		cursor = mysql.connection.cursor()
+		check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, answers.answer, answers.questionid, questions.subcategory FROM questions INNER JOIN answers ON (questions.questionid = answers.questionid) INNER JOIN users ON (users.userid = questions.userid) WHERE answers.userid = %s")
+		values = ([str(userid)])
+		cursor.execute(check, values)
+		blogs = cursor.fetchall()
+
+
+		return render_template('search_question.html',  data = blogs, flag = flag)	

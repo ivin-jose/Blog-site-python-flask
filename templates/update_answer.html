@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<center>
+	<h2>EDIT THE ANSWER</h2><br>
+</center>
+
+{% for row in answer %}
+<h2 style="color: green; font-family: inherit; font-size: 25px; text-transform: capitalize;"> {{ row[1] }}? </h2><br>
+
+<form method="POST" action="{{ url_for('update_ans')}}">
+	<textarea class="form-control" value="" style="height: 120px;" name="answer">{{ row[0] }}</textarea><br>
+	<input type="hidden" name="questionid" value="{{ qid }}">
+	<input type="hidden" name="answerid" value="{{ aid }}">
+	<button class="btn">Submit</button>
+</form>
+<br><br>
+{% endfor %}
+
+{% endblock %}
