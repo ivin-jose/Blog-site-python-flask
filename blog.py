@@ -732,19 +732,28 @@ def delete_user_q(id):
 
 # deleting question
 
-@app.route('/delete_user_a/<int:id>', methods = ['GET', 'POST'])
-def delete_user_a(id):
+@app.route('/delete_user_a/<int:aid>/<int:qid>', methods = ['GET', 'POST'])
+def delete_user_a(aid, qid):
 	blogs = ''
 	qnot_found ='Questioned by : You'
 	userid = session['userid']
 	flag = True
+	answer = 'No Answers Yet'
+	answereduserid = 'none'
 
 # need to delete a column from questions and answers 
 	cursor = mysql.connection.cursor()
 	check = ("DELETE FROM answers WHERE answerid = %s")
-	values = ([str(id)])
+	values = ([str(aid)])
 	cursor.execute(check, values)
 	mysql.connection.commit()
+
+	cursor = mysql.connection.cursor()
+	update = ("UPDATE questions SET answer = %s, answereduserid = %s WHERE questionid = %s")
+	vale = (answer, [str(answereduserid)], [str(qid)])
+	cursor.execute(update, vale)
+	mysql.connection.commit()
+	cursor.close()
 
 	cursor = mysql.connection.cursor()
 	check = ("SELECT users.username, questions.questionid, questions.userid, questions.question, answers.userid, answers.answerid, answers.answer, answers.questionid, questions.subcategory FROM questions INNER JOIN answers ON (questions.questionid = answers.questionid) INNER JOIN users ON (users.userid = questions.userid) WHERE answers.userid = %s")
